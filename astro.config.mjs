@@ -2,6 +2,19 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+// Firebase Analytics (GA4). Firebase console → Project settings → Your apps → web app → measurementId.
+// Empty = no analytics (local builds, previews).
+const gaId = process.env.PUBLIC_GA_MEASUREMENT_ID;
+const analytics = gaId
+	? [
+			{ tag: 'script', attrs: { src: `https://www.googletagmanager.com/gtag/js?id=${gaId}`, async: true } },
+			{
+				tag: 'script',
+				content: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${gaId}');`,
+			},
+		]
+	: [];
+
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://developers.kinesia.one',
@@ -21,6 +34,7 @@ export default defineConfig({
 				alt: 'Kinesia',
 			},
 			favicon: '/favicon.png',
+			head: analytics,
 			customCss: ['./src/styles/kinesia.css'],
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/elmaedesistemas/kinesia-motion' },
