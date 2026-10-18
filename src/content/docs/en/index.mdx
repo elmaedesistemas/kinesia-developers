@@ -1,0 +1,102 @@
+---
+title: Kinesia for Developers
+description: Kinesia SDKs to detect the body, measure range of motion and count reps with a camera.
+template: splash
+hero:
+  title: Motion, measured <span class="kx-accent">with a camera</span>
+  tagline: |
+    Detect the body, measure range of motion in degrees, count reps and correct form live. No sensors, no extra hardware.
+    <span class="kx-platforms"><span class="kx-platform is-live">iOS</span><span class="kx-platform">Android · soon</span><span class="kx-platform">Web · soon</span></span>
+  image:
+    html: |
+      <div class="kx-demo" role="img" aria-label="Demo: an arm does elbow flexion while the SDK measures the angle and counts reps">
+        <div class="kx-chip kx-chip-top"><span class="kx-dot"></span>elbow.flexion · right</div>
+        <svg viewBox="0 0 320 400" aria-hidden="true">
+          <defs>
+            <pattern id="kx-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="1" class="kx-grid-dot" />
+            </pattern>
+          </defs>
+          <rect width="320" height="400" fill="url(#kx-grid)" />
+          <line class="kx-plumb" x1="150" y1="115" x2="150" y2="300" />
+          <g class="kx-body">
+            <circle cx="150" cy="72" r="20" />
+            <path d="M150 95 L150 115 M150 115 L150 235 M150 235 L160 315 L152 390 M150 235 L140 315 L146 390 M150 115 L138 190 L130 258" />
+          </g>
+          <g class="kx-keypoints">
+            <circle cx="150" cy="72" r="4" /><circle cx="150" cy="100" r="4" />
+            <circle cx="138" cy="190" r="4" /><circle cx="130" cy="258" r="4" />
+            <circle cx="150" cy="235" r="5" />
+            <circle cx="160" cy="315" r="4" /><circle cx="140" cy="315" r="4" />
+            <circle cx="152" cy="390" r="4" /><circle cx="146" cy="390" r="4" />
+          </g>
+          <rect class="kx-scan" x="0" y="0" width="320" height="2" />
+          <g class="kx-limb">
+            <line x1="150" y1="115" x2="150" y2="190" />
+            <g class="kx-forearm">
+              <line x1="150" y1="190" x2="150" y2="262" />
+              <circle cx="150" cy="262" r="7" class="kx-joint" />
+            </g>
+            <path class="kx-arc" d="M150 220 A30 30 0 0 0 172.98 170.72" pathLength="130" />
+            <circle cx="150" cy="115" r="7" class="kx-joint" />
+            <circle cx="150" cy="190" r="8" class="kx-joint kx-vertex" />
+          </g>
+        </svg>
+        <div class="kx-readout"><span class="kx-deg"></span><small>flexion</small></div>
+        <div class="kx-chip kx-chip-reps"><span class="kx-reps"></span>&nbsp;clean reps</div>
+      </div>
+  actions:
+    - text: Quick start
+      link: /en/empezar/inicio-rapido/
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/elmaedesistemas/kinesia-motion
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## What it looks like in code
+
+```swift
+import KinesiaMotion
+import KinesiaMotionVision
+
+let session = MotionSession(exercise: ExerciseLibrary.elbowFlexion, side: .right)
+session.start(with: VisionPoseProvider(camera: .front))
+
+for await event in session.events() {
+    if case .repCompleted(let rep) = event {
+        print("Clean rep: \(Int(rep.peak))°")
+    }
+}
+```
+
+## What it solves
+
+<CardGrid>
+	<Card title="Measurements in degrees" icon="seti:pipeline">
+		Flexion, angle from vertical and tilt, computed on the 19 body points that Vision detects.
+	</Card>
+	<Card title="Reps and holds" icon="approve-check">
+		Counts reps with hysteresis (no false positives from jitter) and times held positions with a clock that
+		restarts if the patient moves.
+	</Card>
+	<Card title="Live form checks" icon="warning">
+		Each exercise comes with form rules ("keep your upper arm still", "keep your trunk upright"). Reps done
+		with poor form are rejected, not counted.
+	</Card>
+	<Card title="Exercises as data" icon="document">
+		An exercise is plain JSON: add a new one, or download it from your server, without touching the engine.
+	</Card>
+</CardGrid>
+
+## Where to go next
+
+<CardGrid>
+	<LinkCard title="Installation" description="Add the package with Swift Package Manager." href="/en/empezar/instalacion/" />
+	<LinkCard title="How it works" description="From camera frames to a measured rep." href="/en/conceptos/como-funciona/" />
+	<LinkCard title="Exercise catalog" description="The 8 built-in exercises." href="/en/referencia/ejercicios/" />
+	<LinkCard title="Custom exercises" description="Define your own in Swift or JSON." href="/en/guias/ejercicios-personalizados/" />
+</CardGrid>

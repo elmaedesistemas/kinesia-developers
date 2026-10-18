@@ -1,0 +1,141 @@
+---
+title: Início rápido
+description: Uma tela em SwiftUI que conta flexões de cotovelo com a câmera, em umas 60 linhas.
+---
+
+import { Steps } from '@astrojs/starlight/components';
+
+Vamos construir uma tela que mostra a câmera, o ângulo do cotovelo ao vivo e as repetições. No fim você terá as três peças que qualquer integração usa: **fonte de poses**, **sessão** e **eventos**.
+
+<Steps>
+
+1. **Crie a fonte de poses e a sessão**
+
+   `VisionPoseProvider` lê a câmera frontal e entrega uma `Pose` por quadro. `MotionSession` recebe essas poses para um exercício e um lado do corpo.
+
+   ```swift
+   import KinesiaMotion
+   import KinesiaMotionVision
+
+   let camera = VisionPoseProvider(camera: .front)
+   let session = MotionSession(exercise: ExerciseLibrary.elbowFlexion, side: .right)
+   ```
+
+2. **Peça permissão e comece**
+
+   ```swift
+   if !VisionPoseProvider.isAuthorized {
+       guard await VisionPoseProvider.requestAccess() else { return }
+   }
+   session.start(with: camera)
+   ```
+
+   A câmera liga quando a sessão começa a ler poses e desliga sozinha ao chamar `session.stop()`.
+
+3. **Desenhe com o snapshot**
+
+   `MotionSession` é `@Observable`: o SwiftUI redesenha sempre que `session.snapshot` muda.
+
+   ```swift
+   Text(session.snapshot.value.map { "\(Int($0))°" } ?? "—")
+   Text("\(session.snapshot.repCount) repetições")
+   ```
+
+4. **Reaja aos eventos**
+
+   Os eventos são para o que acontece uma única vez: uma repetição terminada, uma correção de técnica.
+
+   ```swift
+   for await event in session.events() {
+       switch event {
+       case .repCompleted(let rep): print("✓ \(Int(rep.peak))°")
+       case .formFault(let fault):  print("Corrija: \(fault)")
+       default: break
+       }
+   }
+   ```
+
+</Steps>
+
+## O exemplo completo
+
+```swift title="ElbowView.swift"
+import SwiftUI
+import AVFoundation
+import KinesiaMotion
+import KinesiaMotionVision
+
+struct ElbowView: View {
+    @State private var camera = VisionPoseProvider(camera: .front)
+    @State private var session = MotionSession(exercise: ExerciseLibrary.elbowFlexion, side: .right)
+    @State private var message = "Fique de lado e mostre o braço inteiro"
+
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            CameraPreview(session: camera.captureSession)
+                .ignoresSafeArea()
+
+            VStack(spacing: 8) {
+                Text(session.snapshot.value.map { "\(Int($0))°" } ?? "—")
+                    .font(.system(size: 64, weight: .bold, design: .rounded))
+                Text("\(session.snapshot.repCount) repetições · melhor \(Int(session.snapshot.best))°")
+                Text(message).font(.callout)
+            }
+            .padding()
+            .background(.ultraThinMaterial, in: .rect(cornerRadius: 20))
+            .padding()
+        }
+        .task {
+            if !VisionPoseProvider.isAuthorized {
+                guard await VisionPoseProvider.requestAccess() else { return }
+            }
+            session.start(with: camera)
+
+            for await event in session.events() {
+                switch event {
+                case .repCompleted(let rep):
+                    message = "Muito bem! \(Int(rep.peak))°"
+                case .repRejected:
+                    message = "Essa não conta: cuide da técnica"
+                case .formFault(.keepUpperArmStill):
+                    message = "Mantenha o braço junto ao corpo"
+                case .visibilityChanged(let visibility) where !visibility.isVisible:
+                    message = "Não vejo o braço inteiro"
+                default:
+                    break
+                }
+            }
+        }
+        .onDisappear { session.stop() }
+    }
+}
+
+/// The camera image behind everything.
+struct CameraPreview: UIViewRepresentable {
+    let session: AVCaptureSession
+
+    func makeUIView(context: Context) -> PreviewView {
+        let view = PreviewView()
+        view.previewLayer.session = session
+        view.previewLayer.videoGravity = .resizeAspectFill
+        return view
+    }
+
+    func updateUIView(_ uiView: PreviewView, context: Context) {}
+
+    final class PreviewView: UIView {
+        override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
+        var previewLayer: AVCaptureVideoPreviewLayer { layer as! AVCaptureVideoPreviewLayer }
+    }
+}
+```
+
+:::tip[Teste sem iPhone]
+O motor não precisa de câmera. Troque `VisionPoseProvider` por um `RecordedPoseProvider` com poses gravadas e rode o mesmo código no simulador ou em um teste. Veja [Testes e gravações](/pt/guias/pruebas-y-grabaciones/).
+:::
+
+## Próximos passos
+
+- Entenda [como o motor funciona](/pt/conceptos/como-funciona/) por dentro.
+- Adicione uma [medição inicial](/pt/guias/medicion-inicial/) para saber de onde o paciente parte.
+- Use a [qualidade da medição](/pt/guias/calidad-de-medicion/) para orientar o posicionamento diante da câmera.

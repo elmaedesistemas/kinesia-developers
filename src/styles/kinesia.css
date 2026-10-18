@@ -181,6 +181,8 @@
 	border-radius: 999px;
 	padding: 0.3rem 0.8rem;
 }
+:lang(en) .hero .copy::before { content: 'KinesiaMotion · Motion analysis SDK'; }
+:lang(pt-BR) .hero .copy::before { content: 'KinesiaMotion · SDK de análise de movimento'; }
 
 .kx-platforms {
 	display: flex;
@@ -410,7 +412,9 @@
 		width: min(80%, 17rem);
 		margin-top: 1rem;
 	}
-	.hero .copy::before {
+	.hero .copy::before,
+	:lang(en) .hero .copy::before,
+	:lang(pt-BR) .hero .copy::before {
 		content: 'KinesiaMotion SDK';
 	}
 }
