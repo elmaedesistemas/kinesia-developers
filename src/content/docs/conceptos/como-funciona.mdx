@@ -1,0 +1,88 @@
+---
+title: Cómo funciona
+description: El recorrido de un fotograma, desde la cámara hasta una repetición medida.
+---
+
+Cada fotograma de la cámara pasa por la misma cadena. Ninguna pieza sabe de las otras más de lo necesario, por eso cada una se puede probar y reemplazar por separado.
+
+<figure class="pipeline">
+<svg viewBox="0 0 760 170" role="img" aria-label="Cadena: PoseProvider produce Pose, MotionSession la procesa con SetupCheck y RepEngine, y publica MotionSnapshot y MotionEvent">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor" />
+    </marker>
+  </defs>
+  <g font-family="inherit" font-size="13" text-anchor="middle">
+    <rect x="10" y="55" width="130" height="56" rx="10" class="box" />
+    <text x="75" y="80" class="title">PoseProvider</text>
+    <text x="75" y="98" class="sub">cámara · grabación</text>
+
+    <line x1="140" y1="83" x2="198" y2="83" stroke="currentColor" marker-end="url(#arrow)" />
+    <text x="169" y="74" class="sub">Pose</text>
+
+    <rect x="200" y="15" width="330" height="140" rx="12" class="box accent" />
+    <text x="365" y="40" class="title">MotionSession</text>
+    <rect x="220" y="55" width="140" height="80" rx="8" class="box" />
+    <text x="290" y="85" class="title">Visibilidad</text>
+    <text x="290" y="103" class="sub">+ SetupCheck</text>
+    <rect x="375" y="55" width="140" height="80" rx="8" class="box" />
+    <text x="445" y="85" class="title">RepEngine</text>
+    <text x="445" y="103" class="sub">Measure + FormRule</text>
+
+    <line x1="530" y1="60" x2="588" y2="45" stroke="currentColor" marker-end="url(#arrow)" />
+    <line x1="530" y1="110" x2="588" y2="125" stroke="currentColor" marker-end="url(#arrow)" />
+
+    <rect x="590" y="18" width="160" height="52" rx="10" class="box" />
+    <text x="670" y="41" class="title">MotionSnapshot</text>
+    <text x="670" y="58" class="sub">estado → la pantalla</text>
+    <rect x="590" y="98" width="160" height="52" rx="10" class="box" />
+    <text x="670" y="121" class="title">MotionEvent</text>
+    <text x="670" y="138" class="sub">momentos → voz, háptica</text>
+  </g>
+</svg>
+</figure>
+
+## 1. La fuente de poses
+
+Un [`PoseProvider`](/referencia/api/pose-provider/) entrega un `AsyncStream<Pose>`. Puede ser la cámara ([`VisionPoseProvider`](/guias/camara-vision/)), una grabación ([`RecordedPoseProvider`](/guias/pruebas-y-grabaciones/)) o lo que tú implementes. Cada [`Pose`](/conceptos/pose/) son los puntos del cuerpo de un fotograma, en píxeles y con los lados ya corregidos.
+
+## 2. La sesión
+
+[`MotionSession`](/referencia/api/motion-session/) es la puerta de entrada. Por cada pose:
+
+1. **Visibilidad.** ¿Se ven todas las articulaciones que mide el ejercicio? El cambio se confirma tras unos fotogramas seguidos (~0,25 s) para no parpadear.
+2. **Ubicación.** [`SetupCheck`](/guias/calidad-de-medicion/) revisa si el paciente está de frente o de lado, demasiado lejos o al borde de la imagen.
+3. **Motor.** [`RepEngine`](/conceptos/repeticiones/) calcula la medición principal, la suaviza, revisa las reglas de forma y decide si terminó una repetición.
+4. **Medición inicial.** Si hay una en curso, actualiza su progreso.
+
+Luego publica el resultado de dos maneras.
+
+## 3. Snapshot y eventos
+
+| | `MotionSnapshot` | `MotionEvent` |
+| --- | --- | --- |
+| Qué es | El estado completo, en un valor | Algo que pasó en este fotograma |
+| Cómo se lee | `session.snapshot` (observable) | `for await event in session.events()` |
+| Para qué | Dibujar: ángulo, contador, anillo de progreso | Reaccionar una vez: decir «¡bien!», vibrar, guardar |
+
+Más detalle en [Eventos y snapshot](/guias/eventos-y-snapshot/).
+
+## Los ejercicios son datos
+
+El motor no tiene ningún ejercicio programado. Un [`ExerciseDefinition`](/referencia/api/exercise-definition/) describe:
+
+- **qué medir** (`primary`, una [`Measure`](/referencia/api/measure/)),
+- **cómo contar** (`kind`: repeticiones o sostenido),
+- **qué técnica exigir** (`rules`, una lista de [`FormRule`](/referencia/api/exercise-definition/#formrule)),
+- **desde dónde mirar** (`view`: de lado o de frente).
+
+Como todo es `Codable`, un ejercicio nuevo puede llegar en un JSON desde tu servidor. Ver [Ejercicios personalizados](/guias/ejercicios-personalizados/).
+
+<style>{`
+  .pipeline { margin: 1.5rem 0; color: var(--sl-color-gray-3); }
+  .pipeline svg { width: 100%; height: auto; }
+  .pipeline .box { fill: var(--sl-color-black); stroke: var(--sl-color-gray-5); stroke-width: 1.5; }
+  .pipeline .box.accent { fill: var(--sl-color-accent-low); stroke: var(--sl-color-accent); }
+  .pipeline .title { fill: var(--sl-color-white); font-weight: 600; }
+  .pipeline .sub { fill: var(--sl-color-gray-3); font-size: 11px; }
+`}</style>

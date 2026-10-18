@@ -1,0 +1,58 @@
+---
+title: Kinesia for Developers
+description: Mide rangos de movimiento, cuenta repeticiones y corrige la técnica con la cámara del iPhone.
+template: splash
+hero:
+  tagline: Mide rangos de movimiento, cuenta repeticiones y corrige la técnica <em>con la cámara del iPhone</em>. Sin sensores, sin hardware extra.
+  actions:
+    - text: Inicio rápido
+      link: /empezar/inicio-rapido/
+      icon: right-arrow
+    - text: Ver en GitHub
+      link: https://github.com/elmaedesistemas/kinesia-motion
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+```swift
+import KinesiaMotion
+import KinesiaMotionVision
+
+let session = MotionSession(exercise: ExerciseLibrary.elbowFlexion, side: .right)
+session.start(with: VisionPoseProvider(camera: .front))
+
+for await event in session.events() {
+    if case .repCompleted(let rep) = event {
+        print("Repetición limpia: \(Int(rep.peak))°")
+    }
+}
+```
+
+<CardGrid stagger>
+	<Card title="Mediciones en grados" icon="seti:pipeline">
+		Flexión, ángulo contra la vertical e inclinación, calculados sobre los 19 puntos del cuerpo que detecta
+		Vision.
+	</Card>
+	<Card title="Repeticiones y sostenidos" icon="approve-check">
+		Cuenta repeticiones con histéresis (sin falsos positivos por temblor) y mide posiciones sostenidas con un
+		reloj que se reinicia si el paciente se mueve.
+	</Card>
+	<Card title="Técnica en vivo" icon="warning">
+		Cada ejercicio trae reglas de forma («mantén el brazo pegado», «tronco recto»). Las repeticiones con mala
+		técnica se rechazan, no se cuentan.
+	</Card>
+	<Card title="Ejercicios como datos" icon="document">
+		Un ejercicio es JSON puro: agrega uno nuevo, o descárgalo de tu servidor, sin tocar el motor.
+	</Card>
+</CardGrid>
+
+## Por dónde seguir
+
+<CardGrid>
+	<LinkCard title="Instalación" description="Agrega el paquete con Swift Package Manager." href="/empezar/instalacion/" />
+	<LinkCard title="Cómo funciona" description="De los fotogramas de la cámara a una repetición medida." href="/conceptos/como-funciona/" />
+	<LinkCard title="Catálogo de ejercicios" description="Los 8 ejercicios que vienen incluidos." href="/referencia/ejercicios/" />
+	<LinkCard title="Ejercicios personalizados" description="Define los tuyos en Swift o en JSON." href="/guias/ejercicios-personalizados/" />
+</CardGrid>

@@ -1,0 +1,64 @@
+/* Kinesia brand on top of Starlight. Same tokens as kinesia-web. */
+
+@font-face {
+	font-family: 'Figtree';
+	src: url('/fonts/figtree.woff2') format('woff2');
+	font-weight: 300 900;
+	font-display: swap;
+}
+
+:root {
+	--sl-font: 'Figtree', system-ui, sans-serif;
+
+	/* Dark theme (Starlight's default) */
+	--sl-color-accent-low: #0f2d30;
+	--sl-color-accent: #14897f;
+	--sl-color-accent-high: #a7e3dc;
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #e6eeed;
+	--sl-color-gray-2: #c3d1d0;
+	--sl-color-gray-3: #94a8a9;
+	--sl-color-gray-4: #5b6f71;
+	--sl-color-gray-5: #233a3d;
+	--sl-color-gray-6: #112022;
+	--sl-color-black: #0a1517;
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #cdeae6;
+	--sl-color-accent: #0f766e;
+	--sl-color-accent-high: #0b5b55;
+	--sl-color-white: #10292c;
+	--sl-color-gray-1: #10292c;
+	--sl-color-gray-2: #2c4447;
+	--sl-color-gray-3: #5b6f71;
+	--sl-color-gray-4: #94a8a9;
+	--sl-color-gray-5: #dde5e3;
+	--sl-color-gray-6: #eef3f2;
+	--sl-color-gray-7: #f4f7f6;
+	--sl-color-black: #ffffff;
+}
+
+.site-title img {
+	height: 1.6rem;
+	width: auto;
+}
+
+/* The logo already says "kinesia": show only "for Developers" next to it. */
+.site-title span {
+	font-size: 0;
+}
+.site-title span::after {
+	content: 'for Developers';
+	font-size: var(--sl-text-lg);
+	font-weight: 500;
+	color: var(--sl-color-gray-3);
+	padding-inline-start: 0.6rem;
+	border-inline-start: 1px solid var(--sl-color-gray-5);
+}
+
+/* Coral accent for the hero tagline, like the arc in the logo. */
+.hero .tagline em {
+	color: #e8674a;
+	font-style: normal;
+}
