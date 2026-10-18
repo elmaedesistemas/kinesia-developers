@@ -64,16 +64,92 @@
 	isolation: isolate;
 }
 
-/* Soft brand glow behind the hero. */
-.hero::before {
+/* ---------- Hero background: full-bleed aurora, dot grid, goniometer ---------- */
+
+:root {
+	--kx-hero-base: #04100f;
+	--kx-aurora-1: rgba(20, 160, 148, 0.85);
+	--kx-aurora-2: rgba(232, 103, 74, 0.6);
+	--kx-aurora-3: rgba(76, 195, 138, 0.4);
+	--kx-grid: rgba(167, 227, 220, 0.2);
+	--kx-gonio: rgba(167, 227, 220, 0.3);
+}
+:root[data-theme='light'] {
+	--kx-hero-base: #e9f4f1;
+	--kx-aurora-1: rgba(15, 118, 110, 0.4);
+	--kx-aurora-2: rgba(232, 103, 74, 0.32);
+	--kx-aurora-3: rgba(76, 195, 138, 0.3);
+	--kx-grid: rgba(15, 118, 110, 0.16);
+	--kx-gonio: rgba(15, 118, 110, 0.2);
+}
+
+/* The full-bleed layers are wider than the column: keep them from adding a horizontal scroll. */
+.page {
+	overflow-x: clip;
+}
+
+.hero::before,
+.hero::after {
 	content: '';
 	position: absolute;
-	inset: 0;
 	z-index: -1;
-	background:
-		radial-gradient(40% 55% at 78% 45%, color-mix(in srgb, var(--sl-color-accent) 22%, transparent), transparent 70%),
-		radial-gradient(25% 35% at 92% 80%, color-mix(in srgb, #e8674a 14%, transparent), transparent 70%);
+	top: -1.5rem;
+	bottom: 0;
+	inset-inline: calc(50% - 50vw);
 	pointer-events: none;
+	mask-image: linear-gradient(to bottom, #000 75%, transparent);
+}
+
+/* Base color + drifting aurora. */
+.hero::before {
+	background:
+		radial-gradient(38% 50% at 72% 42%, var(--kx-aurora-1), transparent 72%),
+		radial-gradient(32% 42% at 92% 80%, var(--kx-aurora-2), transparent 72%),
+		radial-gradient(34% 50% at 12% 10%, var(--kx-aurora-3), transparent 72%),
+		radial-gradient(25% 30% at 40% 95%, var(--kx-aurora-2), transparent 75%),
+		var(--kx-hero-base);
+	background-size: 140% 140%, 140% 140%, 140% 140%, 140% 140%, 100% 100%;
+	background-position: 50% 50%, 50% 50%, 50% 50%, 50% 50%, 0 0;
+	animation: kx-aurora 18s ease-in-out infinite alternate;
+}
+@keyframes kx-aurora {
+	0% { background-position: 40% 50%, 60% 40%, 50% 60%, 30% 50%, 0 0; }
+	50% { background-position: 60% 40%, 40% 60%, 35% 45%, 60% 55%, 0 0; }
+	100% { background-position: 50% 65%, 55% 30%, 60% 50%, 45% 40%, 0 0; }
+}
+
+/* Dot grid that fades out from the center-right. */
+.hero::after {
+	background-image: radial-gradient(var(--kx-grid) 1.2px, transparent 1.4px);
+	background-size: 22px 22px;
+	mask-image:
+		radial-gradient(60% 70% at 65% 45%, #000 20%, transparent 75%),
+		linear-gradient(to bottom, #000 75%, transparent);
+	mask-composite: intersect;
+}
+
+/* Hero copy on top of the dark base: always use light text in dark, ink in light. */
+.hero .tagline { color: var(--sl-color-gray-2); }
+
+/* Goniometer ring turning slowly behind the demo card. */
+.hero > .hero-html {
+	position: relative;
+}
+.hero > .hero-html::before {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	width: 165%;
+	aspect-ratio: 1;
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
+	background: var(--kx-gonio);
+	mask: url('/gonio.svg') center / contain no-repeat;
+	animation: kx-spin 90s linear infinite;
+}
+@keyframes kx-spin {
+	to { rotate: 360deg; }
 }
 
 .hero h1 {
@@ -324,6 +400,7 @@
 	.kx-demo { animation: none; --kx-deg: 125; --kx-reps: 3; }
 	.kx-dot { animation: none; }
 	.kx-scan { display: none; }
+	.hero::before, .hero > .hero-html::before { animation: none; }
 }
 
 /* Phones: text first, smaller demo, shorter eyebrow. */
