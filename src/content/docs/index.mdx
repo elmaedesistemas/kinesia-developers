@@ -1,9 +1,50 @@
 ---
 title: Kinesia for Developers
-description: Mide rangos de movimiento, cuenta repeticiones y corrige la técnica con la cámara del iPhone.
+description: SDKs de Kinesia para detectar el cuerpo, medir rangos de movimiento y contar repeticiones con la cámara.
 template: splash
 hero:
-  tagline: Mide rangos de movimiento, cuenta repeticiones y corrige la técnica <em>con la cámara del iPhone</em>. Sin sensores, sin hardware extra.
+  title: El movimiento, medido <span class="kx-accent">con una cámara</span>
+  tagline: |
+    Detecta el cuerpo, mide rangos en grados, cuenta repeticiones y corrige la técnica en vivo. Sin sensores ni hardware extra.
+    <span class="kx-platforms"><span class="kx-platform is-live">iOS</span><span class="kx-platform">Android · pronto</span><span class="kx-platform">Web · pronto</span></span>
+  image:
+    html: |
+      <div class="kx-demo" role="img" aria-label="Demostración: un brazo hace flexión de codo y el SDK mide el ángulo y cuenta repeticiones">
+        <div class="kx-chip kx-chip-top"><span class="kx-dot"></span>elbow.flexion · derecho</div>
+        <svg viewBox="0 0 320 400" aria-hidden="true">
+          <defs>
+            <pattern id="kx-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="1" class="kx-grid-dot" />
+            </pattern>
+          </defs>
+          <rect width="320" height="400" fill="url(#kx-grid)" />
+          <line class="kx-plumb" x1="150" y1="115" x2="150" y2="300" />
+          <g class="kx-body">
+            <circle cx="150" cy="72" r="20" />
+            <path d="M150 95 L150 115 M150 115 L150 235 M150 235 L160 315 L152 390 M150 235 L140 315 L146 390 M150 115 L138 190 L130 258" />
+          </g>
+          <g class="kx-keypoints">
+            <circle cx="150" cy="72" r="4" /><circle cx="150" cy="100" r="4" />
+            <circle cx="138" cy="190" r="4" /><circle cx="130" cy="258" r="4" />
+            <circle cx="150" cy="235" r="5" />
+            <circle cx="160" cy="315" r="4" /><circle cx="140" cy="315" r="4" />
+            <circle cx="152" cy="390" r="4" /><circle cx="146" cy="390" r="4" />
+          </g>
+          <rect class="kx-scan" x="0" y="0" width="320" height="2" />
+          <g class="kx-limb">
+            <line x1="150" y1="115" x2="150" y2="190" />
+            <g class="kx-forearm">
+              <line x1="150" y1="190" x2="150" y2="262" />
+              <circle cx="150" cy="262" r="7" class="kx-joint" />
+            </g>
+            <path class="kx-arc" d="M150 220 A30 30 0 0 0 172.98 170.72" pathLength="130" />
+            <circle cx="150" cy="115" r="7" class="kx-joint" />
+            <circle cx="150" cy="190" r="8" class="kx-joint kx-vertex" />
+          </g>
+        </svg>
+        <div class="kx-readout"><span class="kx-deg"></span><small>flexión</small></div>
+        <div class="kx-chip kx-chip-reps"><span class="kx-reps"></span>&nbsp;reps limpias</div>
+      </div>
   actions:
     - text: Inicio rápido
       link: /empezar/inicio-rapido/
@@ -15,6 +56,8 @@ hero:
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Así se ve en código
 
 ```swift
 import KinesiaMotion
@@ -30,7 +73,9 @@ for await event in session.events() {
 }
 ```
 
-<CardGrid stagger>
+## Qué resuelve
+
+<CardGrid>
 	<Card title="Mediciones en grados" icon="seti:pipeline">
 		Flexión, ángulo contra la vertical e inclinación, calculados sobre los 19 puntos del cuerpo que detecta
 		Vision.

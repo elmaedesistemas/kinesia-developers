@@ -57,8 +57,283 @@
 	border-inline-start: 1px solid var(--sl-color-gray-5);
 }
 
-/* Coral accent for the hero tagline, like the arc in the logo. */
-.hero .tagline em {
-	color: #e8674a;
-	font-style: normal;
+/* ---------- Home hero ---------- */
+
+.hero {
+	position: relative;
+	isolation: isolate;
+}
+
+/* Soft brand glow behind the hero. */
+.hero::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background:
+		radial-gradient(40% 55% at 78% 45%, color-mix(in srgb, var(--sl-color-accent) 22%, transparent), transparent 70%),
+		radial-gradient(25% 35% at 92% 80%, color-mix(in srgb, #e8674a 14%, transparent), transparent 70%);
+	pointer-events: none;
+}
+
+.hero h1 {
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+}
+
+.hero .kx-accent {
+	background: linear-gradient(90deg, var(--sl-color-accent) 0%, #e8674a 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.hero .tagline {
+	text-wrap: pretty;
+}
+
+/* Eyebrow above the title. */
+.hero .copy::before {
+	content: 'KinesiaMotion · SDK de análisis de movimiento';
+	font-size: var(--sl-text-xs);
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--sl-color-accent-high);
+	background: var(--sl-color-accent-low);
+	border: 1px solid color-mix(in srgb, var(--sl-color-accent) 40%, transparent);
+	border-radius: 999px;
+	padding: 0.3rem 0.8rem;
+}
+
+.kx-platforms {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 1.25rem;
+}
+.hero .copy { align-items: center; }
+@media (min-width: 50rem) {
+	.hero .copy { align-items: flex-start; }
+}
+@media (max-width: 49.99rem) {
+	.kx-platforms { justify-content: center; }
+}
+
+.kx-platform {
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-3);
+	border: 1px dashed var(--sl-color-gray-5);
+	border-radius: 999px;
+	padding: 0.15rem 0.75rem;
+}
+.kx-platform.is-live {
+	color: var(--sl-color-white);
+	border-style: solid;
+	border-color: var(--sl-color-accent);
+}
+.kx-platform.is-live::before {
+	content: '';
+	display: inline-block;
+	width: 0.45rem;
+	height: 0.45rem;
+	margin-inline-end: 0.4rem;
+	border-radius: 50%;
+	background: #4cc38a;
+	vertical-align: 0.1em;
+}
+
+/* ---------- Animated demo ---------- */
+
+@property --kx-deg {
+	syntax: '<integer>';
+	inherits: true;
+	initial-value: 10;
+}
+@property --kx-reps {
+	syntax: '<integer>';
+	inherits: true;
+	initial-value: 0;
+}
+
+.hero > .hero-html {
+	width: min(100%, 22rem);
+}
+
+.kx-demo {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	border-radius: 1.5rem;
+	overflow: hidden;
+	background: linear-gradient(160deg, var(--sl-color-gray-6), var(--sl-color-black));
+	border: 1px solid var(--sl-color-gray-5);
+	box-shadow:
+		0 30px 60px -20px color-mix(in srgb, var(--sl-color-accent) 35%, transparent),
+		0 0 0 6px color-mix(in srgb, var(--sl-color-gray-5) 40%, transparent);
+	animation: kx-count 16s linear infinite, kx-flex 4s ease-in-out infinite;
+}
+
+.kx-demo svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.kx-grid-dot { fill: var(--sl-color-gray-5); }
+
+.kx-body {
+	fill: none;
+	stroke: var(--sl-color-gray-4);
+	stroke-width: 8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	opacity: 0.7;
+}
+
+.kx-keypoints circle {
+	fill: var(--sl-color-gray-2);
+	opacity: 0.9;
+}
+
+/* Reference line for "from vertical" measures. */
+.kx-plumb {
+	stroke: var(--sl-color-gray-4);
+	stroke-width: 1.5;
+	stroke-dasharray: 4 6;
+}
+
+/* Detector sweep. */
+.kx-scan {
+	fill: var(--sl-color-accent);
+	opacity: 0.5;
+	filter: drop-shadow(0 0 6px var(--sl-color-accent));
+	animation: kx-scan 3.2s ease-in-out infinite;
+}
+@keyframes kx-scan {
+	0% { transform: translateY(20px); opacity: 0; }
+	15% { opacity: 0.5; }
+	85% { opacity: 0.5; }
+	100% { transform: translateY(395px); opacity: 0; }
+}
+
+.kx-limb line {
+	stroke: var(--sl-color-accent);
+	stroke-width: 9;
+	stroke-linecap: round;
+}
+
+.kx-joint {
+	fill: var(--sl-color-black);
+	stroke: var(--sl-color-accent);
+	stroke-width: 3;
+}
+.kx-vertex {
+	fill: #e8674a;
+	stroke: none;
+}
+
+.kx-arc {
+	fill: none;
+	stroke: #e8674a;
+	stroke-width: 5;
+	stroke-linecap: butt;
+	stroke-dasharray: 130;
+	stroke-dashoffset: calc(130 - var(--kx-deg));
+}
+
+.kx-forearm {
+	transform-box: view-box;
+	transform-origin: 150px 190px;
+	transform: rotate(calc(var(--kx-deg) * -1deg));
+}
+
+.kx-chip {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: var(--sl-text-xs);
+	font-weight: 600;
+	color: var(--sl-color-gray-2);
+	background: color-mix(in srgb, var(--sl-color-black) 75%, transparent);
+	backdrop-filter: blur(8px);
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 999px;
+	padding: 0.3rem 0.7rem;
+}
+.kx-chip-top { top: 1rem; left: 1rem; font-family: var(--__sl-font-mono); font-weight: 500; }
+.kx-chip-reps { bottom: 1rem; right: 1rem; }
+
+.kx-dot {
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: 50%;
+	background: #e8674a;
+	animation: kx-pulse 1.2s ease-in-out infinite;
+}
+
+.kx-readout {
+	position: absolute;
+	left: 1rem;
+	bottom: 0.75rem;
+	display: flex;
+	flex-direction: column;
+	line-height: 1;
+}
+.kx-readout small {
+	font-size: var(--sl-text-xs);
+	color: var(--sl-color-gray-3);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	margin-top: 0.35rem;
+}
+.kx-deg::before {
+	counter-reset: deg var(--kx-deg);
+	content: counter(deg) '°';
+	font-size: 2.75rem;
+	font-weight: 700;
+	color: var(--sl-color-white);
+	font-variant-numeric: tabular-nums;
+}
+.kx-reps::before {
+	counter-reset: reps var(--kx-reps);
+	content: counter(reps);
+	color: var(--sl-color-accent-high);
+	font-variant-numeric: tabular-nums;
+}
+
+/* One rep every 4 s: rise to 125°, hold, return to rest. */
+@keyframes kx-flex {
+	0%, 8% { --kx-deg: 10; }
+	45%, 60% { --kx-deg: 125; }
+	95%, 100% { --kx-deg: 10; }
+}
+/* The rep counts when the arm is back at rest. */
+@keyframes kx-count {
+	0%, 24.99% { --kx-reps: 0; }
+	25%, 49.99% { --kx-reps: 1; }
+	50%, 74.99% { --kx-reps: 2; }
+	75%, 100% { --kx-reps: 3; }
+}
+@keyframes kx-pulse {
+	50% { opacity: 0.3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.kx-demo { animation: none; --kx-deg: 125; --kx-reps: 3; }
+	.kx-dot { animation: none; }
+	.kx-scan { display: none; }
+}
+
+/* Phones: text first, smaller demo, shorter eyebrow. */
+@media (max-width: 49.99rem) {
+	.hero > .hero-html {
+		order: 2;
+		width: min(80%, 17rem);
+		margin-top: 1rem;
+	}
+	.hero .copy::before {
+		content: 'KinesiaMotion SDK';
+	}
 }
