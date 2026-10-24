@@ -16,6 +16,30 @@ let provider = RecordedPoseProvider(poses, realTime: false)
 - `realTime: false` (padrão): entrega as poses o mais rápido possível. Ideal para testes.
 - `realTime: true`: espera entre poses conforme os `timestamp`, assim uma demo parece ao vivo.
 
+## A partir de um vídeo: `VideoPoseProvider`
+
+Extrai as poses de um vídeo (`.mov` ou `.mp4`) com o mesmo detector de corpo do Apple Vision usado pela câmera ao vivo. O vídeo é processado no próprio dispositivo e não é enviado para lugar nenhum. Fica no módulo `KinesiaMotionVision` e funciona em iOS e macOS.
+
+```swift
+import KinesiaMotion
+import KinesiaMotionVision
+
+let video = VideoPoseProvider(url: videoURL)
+
+// Igual à câmera:
+await session.run(with: video)
+
+// Ou todas as poses de uma vez, para salvar ou reutilizar:
+let poses = try await video.readAll()
+let replay = RecordedPoseProvider(poses)
+```
+
+- Serve para validar contra um goniômetro: grave a medição com o goniômetro ao lado e compare os graus depois.
+- Lê vídeos do iPhone em qualquer orientação.
+- `mirrored: true` quando o vídeo parece um espelho (uma selfie que manteve a imagem invertida), para os lados ficarem como os do paciente.
+- `maximumFrameRate` (30 por padrão) pula quadros para ir mais rápido; `realTime: true` espera entre quadros como a câmera.
+- `readAll()` lança um erro se o arquivo não puder ser lido; `poses()` simplesmente termina.
+
 ## Poses sintéticas
 
 Para um teste bastam as articulações que o exercício mede. Este helper monta um braço direito com uma flexão de cotovelo exata:

@@ -3,10 +3,11 @@ title: Releases
 description: KinesiaMotion release history.
 ---
 
-The current stable release is **0.1.0**. Pin an exact version in your `Package.swift` and check this page before updating.
+The current stable release is **0.2.0**. Pin an exact version in your `Package.swift` and check this page before updating.
 
 | Version | Date | Changes |
 | --- | --- | --- |
+| `0.2.0` | 2026-10-24 | **`VideoPoseProvider`**: poses from a video file (`.mov`, `.mp4`) with the same detector as the camera, on iOS and macOS; `readAll()` returns every pose. |
 | `0.1.0` | 2026-10-24 | **First stable release.** Same code as `0.1.0-alpha.9`, plus `CHANGELOG.md`. Accuracy against a goniometer (target ±5°) is validated in the pilot. |
 | `0.1.0-alpha.9` | 2026-10-17 | **Measurement quality:** `SetupCheck` and `SetupIssue`, `.setupChanged` event; per-rep metrics (`riseDuration`, `returnDuration`, `peakVelocity`, `confidence`) and `peakSpread`; confidence in the snapshot. |
 | `0.1.0-alpha.8` | 2026-10-17 | `Pose` carries per-joint confidence. Fix: real-time `RecordedPoseProvider` waited three times too long. |
