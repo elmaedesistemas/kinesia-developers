@@ -3,10 +3,11 @@ title: Versões
 description: Histórico de versões do KinesiaMotion.
 ---
 
-O KinesiaMotion está em **alpha**: a API pode mudar entre versões. Fixe uma versão exata no seu `Package.swift`.
+A versão estável atual é a **0.1.0**. Fixe uma versão exata no seu `Package.swift` e consulte esta página antes de atualizar.
 
 | Versão | Data | Mudanças |
 | --- | --- | --- |
+| `0.1.0` | 2026-10-24 | **Primeira versão estável.** Mesmo código da `0.1.0-alpha.9`, com `CHANGELOG.md`. A precisão frente ao goniômetro (meta ±5°) é validada no piloto. |
 | `0.1.0-alpha.9` | 2026-10-17 | **Qualidade da medição:** `SetupCheck` e `SetupIssue`, evento `.setupChanged`; métricas por repetição (`riseDuration`, `returnDuration`, `peakVelocity`, `confidence`) e `peakSpread`; confiança no snapshot. |
 | `0.1.0-alpha.8` | 2026-10-17 | `Pose` traz confiança por articulação. Correção: `RecordedPoseProvider` em tempo real esperava o triplo. |
 | `0.1.0-alpha.7` | 2026-10-17 | Exercícios de sustentação (`.hold`, `.holdStarted`, `holdProgress`). Novos no catálogo: ombro, quadril, tornozelo e pescoço. |
