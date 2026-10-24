@@ -29,6 +29,27 @@ init(camera: Camera = .front, minimumConfidence: Float = 0.3)
 | `static isAuthorized: Bool` | Whether camera permission is already granted. |
 | `static requestAccess() async -> Bool` | Asks for permission. |
 
+## `VideoPoseProvider`
+
+Module `KinesiaMotionVision`, iOS and macOS. Since 0.2.0. See [Tests and recordings](/en/guias/pruebas-y-grabaciones/).
+
+```swift
+init(url: URL,
+     mirrored: Bool = false,
+     minimumConfidence: Float = 0.3,
+     maximumFrameRate: Double = 30,
+     realTime: Bool = false)
+```
+
+| Member | |
+| --- | --- |
+| `url: URL` | The video (`.mov`, `.mp4`). Processed on the device. |
+| `mirrored: Bool` | `true` when the video looks like a mirror; sides become the patient's. |
+| `minimumConfidence: Float` | Points below this confidence are dropped. |
+| `maximumFrameRate: Double` | Skips frames closer than `1 / maximumFrameRate`. |
+| `realTime: Bool` | Waits between frames as in the video. |
+| `readAll() async throws -> [Pose]` | Every pose at once. Throws `ReadError` if the file can't be read. |
+
 ## `RecordedPoseProvider`
 
 Module `KinesiaMotion`. See [Tests and recordings](/en/guias/pruebas-y-grabaciones/).

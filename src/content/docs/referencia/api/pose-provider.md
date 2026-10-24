@@ -1,6 +1,6 @@
 ---
 title: PoseProvider
-description: Fuentes de poses incluidas y cómo escribir la tuya.
+description: Fuentes de poses incluidas (cámara, video y grabaciones) y cómo escribir la tuya.
 sidebar:
   order: 2
 ---
@@ -28,6 +28,27 @@ init(camera: Camera = .front, minimumConfidence: Float = 0.3)
 | `minimumConfidence: Float` | Puntos con menos confianza se descartan. |
 | `static isAuthorized: Bool` | Si ya hay permiso de cámara. |
 | `static requestAccess() async -> Bool` | Pide el permiso. |
+
+## `VideoPoseProvider`
+
+Módulo `KinesiaMotionVision`, iOS y macOS. Desde 0.2.0. Ver [Pruebas y grabaciones](/guias/pruebas-y-grabaciones/).
+
+```swift
+init(url: URL,
+     mirrored: Bool = false,
+     minimumConfidence: Float = 0.3,
+     maximumFrameRate: Double = 30,
+     realTime: Bool = false)
+```
+
+| Miembro | |
+| --- | --- |
+| `url: URL` | El video (`.mov`, `.mp4`). Se procesa en el dispositivo. |
+| `mirrored: Bool` | `true` si el video se ve como espejo; los lados se pasan a los del paciente. |
+| `minimumConfidence: Float` | Puntos con menos confianza se descartan. |
+| `maximumFrameRate: Double` | Salta cuadros más juntos que `1 / maximumFrameRate`. |
+| `realTime: Bool` | Espera entre cuadros como en el video. |
+| `readAll() async throws -> [Pose]` | Todas las poses de una vez. Lanza `ReadError` si no puede leer el archivo. |
 
 ## `RecordedPoseProvider`
 
