@@ -40,6 +40,30 @@ let replay = RecordedPoseProvider(poses)
 - `maximumFrameRate` (30 by default) skips frames to go faster; `realTime: true` waits between frames like the camera.
 - `readAll()` throws if the file can't be read; `poses()` just ends.
 
+## Validate against a goniometer: `kinesia-validate`
+
+The package includes a command-line tool that compares Kinesia's angles with a goniometer. Each trial is a short video plus the reading the goniometer showed while the patient held the end of the range.
+
+Write the trials in a CSV, one line per video, with the videos in the same folder. The column names and values are in Spanish:
+
+```
+video,ejercicio,lado,goniometro,espejo
+codo-der-01.mov,codo,derecho,132,no
+```
+
+From the `kinesia-motion` folder, on a Mac:
+
+```sh
+swift run kinesia-validate ~/Validacion/mediciones.csv
+```
+
+- It reads each video with `VideoPoseProvider` and takes the angle at the end of the range (the median of the 5 highest frames).
+- Per exercise and side it shows the mean absolute error, the bias (whether it reads high or low), the worst error and the share within ±5°. It passes if the mean error is 5° or less.
+- It writes `resultados.csv` in the same folder, with the detail of each video.
+- `ejercicio` is one of: `codo` (elbow), `rodilla` (knee), `hombro-flexion`, `hombro-abduccion` (shoulder), `cadera-flexion`, `cadera-abduccion` (hip), `tobillo` (ankle), `cuello` (neck). `lado` is `izquierdo` (left) or `derecho` (right).
+
+Camera placement for each exercise and how to record are in [`Validation/INSTRUCCIONES.md`](https://github.com/elmaedesistemas/kinesia-motion/blob/main/Validation/INSTRUCCIONES.md) (in Spanish).
+
 ## Synthetic poses
 
 For a test, the joints the exercise measures are enough. This helper builds a right arm with an exact elbow flexion:

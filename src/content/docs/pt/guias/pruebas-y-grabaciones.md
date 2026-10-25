@@ -40,6 +40,30 @@ let replay = RecordedPoseProvider(poses)
 - `maximumFrameRate` (30 por padrão) pula quadros para ir mais rápido; `realTime: true` espera entre quadros como a câmera.
 - `readAll()` lança um erro se o arquivo não puder ser lido; `poses()` simplesmente termina.
 
+## Validar contra um goniômetro: `kinesia-validate`
+
+O pacote traz uma ferramenta de linha de comando que compara os ângulos do Kinesia com um goniômetro. Cada medição é um vídeo curto e o valor que o goniômetro marcou enquanto o paciente sustentava o final da amplitude.
+
+Anote as medições em um CSV, uma linha por vídeo, com os vídeos na mesma pasta. Os nomes das colunas e os valores ficam em espanhol:
+
+```
+video,ejercicio,lado,goniometro,espejo
+codo-der-01.mov,codo,derecho,132,no
+```
+
+Na pasta `kinesia-motion`, em um Mac:
+
+```sh
+swift run kinesia-validate ~/Validacion/mediciones.csv
+```
+
+- Lê cada vídeo com `VideoPoseProvider` e pega o ângulo no final da amplitude (a mediana dos 5 quadros mais altos).
+- Por exercício e lado mostra o erro médio, o viés (se mede a mais ou a menos), o pior erro e a porcentagem dentro de ±5°. Passa se o erro médio for de 5° ou menos.
+- Deixa `resultados.csv` na mesma pasta, com o detalhe de cada vídeo.
+- `ejercicio` é um de: `codo` (cotovelo), `rodilla` (joelho), `hombro-flexion`, `hombro-abduccion` (ombro), `cadera-flexion`, `cadera-abduccion` (quadril), `tobillo` (tornozelo), `cuello` (pescoço). `lado` é `izquierdo` (esquerdo) ou `derecho` (direito).
+
+Como posicionar a câmera para cada exercício e como gravar está em [`Validation/INSTRUCCIONES.md`](https://github.com/elmaedesistemas/kinesia-motion/blob/main/Validation/INSTRUCCIONES.md) (em espanhol).
+
 ## Poses sintéticas
 
 Para um teste bastam as articulações que o exercício mede. Este helper monta um braço direito com uma flexão de cotovelo exata:

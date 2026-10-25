@@ -12,7 +12,7 @@ KinesiaMotion ships with **Swift Package Manager**.
    ```
    https://github.com/elmaedesistemas/kinesia-motion.git
    ```
-3. Under **Dependency Rule** choose **Exact Version** and enter the latest version (for example `0.2.0`).
+3. Under **Dependency Rule** choose **Exact Version** and enter the latest version (for example `0.3.0`).
 4. Add the products you need to your app target:
    - `KinesiaMotion`: always.
    - `KinesiaMotionVision`: if you'll use the iPhone camera.
@@ -25,7 +25,7 @@ Pin an exact version and read the [release notes](/en/referencia/versiones/) bef
 
 ```swift title="Package.swift"
 dependencies: [
-    .package(url: "https://github.com/elmaedesistemas/kinesia-motion.git", exact: "0.2.0")
+    .package(url: "https://github.com/elmaedesistemas/kinesia-motion.git", exact: "0.3.0")
 ],
 targets: [
     .target(
