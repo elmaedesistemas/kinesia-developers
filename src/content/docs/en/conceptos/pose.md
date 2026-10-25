@@ -36,6 +36,8 @@ Send the pose even when it has no points. An empty pose tells the session the pa
 | Arms | `leftShoulder`, `rightShoulder`, `leftElbow`, `rightElbow`, `leftWrist`, `rightWrist` |
 | Legs | `leftHip`, `rightHip`, `leftKnee`, `rightKnee`, `leftAnkle`, `rightAnkle` |
 
+On Android they're written `Joint.LEFT_SHOULDER`, `Joint.NECK`, and so on. MediaPipe detects 33 points (BlazePose): the SDK converts them to these same 19, and computes `neck` and `root` as the midpoint of the shoulders and of the hips. See [Camera with MediaPipe](/en/android/camara-mediapipe/).
+
 To avoid writing `side == .left ? .leftKnee : .rightKnee`, use the shortcuts:
 
 ```swift

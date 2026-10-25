@@ -1,0 +1,135 @@
+---
+title: Quick start on Android
+description: A Jetpack Compose screen that counts elbow flexions with the camera.
+---
+
+import { Steps } from '@astrojs/starlight/components';
+
+It's the same screen as the [iOS quick start](/en/empezar/inicio-rapido/), in Kotlin: the camera, the live elbow angle and the reps. The three pieces are the same: **pose source**, **session** and **events**.
+
+<Steps>
+
+1. **Create the pose source and the session**
+
+   `CameraPoseProvider` reads the front camera and delivers one `Pose` per frame. `MotionSession` takes those poses for one exercise and one side of the body.
+
+   ```kotlin
+   import one.kinesia.motion.*
+   import one.kinesia.motion.camera.CameraPoseProvider
+
+   val camera = CameraPoseProvider(context, lifecycleOwner, previewSurface = previewView.surfaceProvider)
+   val session = MotionSession(ExerciseLibrary.elbowFlexion, BodySide.RIGHT)
+   ```
+
+2. **Start**
+
+   With the camera permission already granted ([Installation](/en/android/instalacion/#camera-permission)):
+
+   ```kotlin
+   session.start(camera, lifecycleScope)
+   ```
+
+   The camera turns on when the session starts reading poses and turns off when you call `session.stop()` or the scope ends.
+
+3. **Draw from the snapshot**
+
+   `session.snapshot` is a `StateFlow<MotionSnapshot>`: in Compose, turn it into state.
+
+   ```kotlin
+   val snapshot by session.snapshot.collectAsStateWithLifecycle()
+   Text(snapshot.value?.let { "${it.roundToInt()}°" } ?: "—")
+   Text("${snapshot.repCount} reps")
+   ```
+
+4. **React to events**
+
+   `session.events` is a `SharedFlow<MotionEvent>` for things that happen once.
+
+   ```kotlin
+   session.events.collect { event ->
+       when (event) {
+           is MotionEvent.RepCompleted -> println("✓ ${event.rep.peak.roundToInt()}°")
+           is MotionEvent.FormFault -> println("Fix: ${event.feedback}")
+           else -> {}
+       }
+   }
+   ```
+
+</Steps>
+
+## The full example
+
+```kotlin title="ElbowScreen.kt"
+import androidx.camera.view.PreviewView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
+import one.kinesia.motion.*
+import one.kinesia.motion.camera.CameraPoseProvider
+import kotlin.math.roundToInt
+
+@Composable
+fun ElbowScreen() {
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val previewView = remember { PreviewView(context) }
+    val session = remember { MotionSession(ExerciseLibrary.elbowFlexion, BodySide.RIGHT) }
+    val snapshot by session.snapshot.collectAsStateWithLifecycle()
+    var message by remember { mutableStateOf("Stand sideways and show your whole arm") }
+
+    // Runs while the screen is visible: leaving it cancels both, and the camera turns off.
+    LaunchedEffect(session) {
+        val camera = CameraPoseProvider(context, lifecycleOwner, previewSurface = previewView.surfaceProvider)
+        launch { session.run(camera) }
+        session.events.collect { event ->
+            message = when (event) {
+                is MotionEvent.RepCompleted -> "Nice! ${event.rep.peak.roundToInt()}°"
+                is MotionEvent.RepRejected -> "That one doesn't count: watch your form"
+                is MotionEvent.FormFault ->
+                    if (event.feedback == FormFeedback.KEEP_UPPER_ARM_STILL) "Keep your arm against your body" else message
+                is MotionEvent.VisibilityChanged ->
+                    if (!event.visibility.isVisible) "I can't see your whole arm" else message
+                else -> message
+            }
+        }
+    }
+
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+        AndroidView(factory = { previewView }, modifier = Modifier.fillMaxSize())
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(16.dp)
+                .background(Color.White.copy(alpha = 0.85f), RoundedCornerShape(20.dp))
+                .padding(16.dp),
+        ) {
+            Text(snapshot.value?.let { "${it.roundToInt()}°" } ?: "—", fontSize = 64.sp)
+            Text("${snapshot.repCount} reps · best ${snapshot.best.roundToInt()}°")
+            Text(message)
+        }
+    }
+}
+```
+
+:::tip[Try it without a phone]
+The engine (`kinesia-motion`) is pure Kotlin. Swap `CameraPoseProvider` for a `RecordedPoseProvider` with recorded poses and run the same code in a JVM test, no emulator. See [Tests and recordings](/en/guias/pruebas-y-grabaciones/).
+:::
+
+## Next steps
+
+- Check the [differences from iOS](/en/android/diferencias-con-ios/) to read the guides, which have their examples in Swift.
+- Understand [how the engine works](/en/conceptos/como-funciona/) inside.
+- Add a [baseline measurement](/en/guias/medicion-inicial/) to know where the patient starts.

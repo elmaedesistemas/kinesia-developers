@@ -21,7 +21,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Kinesia for Developers',
-			description: 'Documentación de KinesiaMotion, el SDK de Kinesia para medir movimiento con la cámara del iPhone.',
+			description: 'Documentación de KinesiaMotion, el SDK de Kinesia para medir movimiento con la cámara, en iOS y Android.',
 			defaultLocale: 'root',
 			locales: {
 				root: { label: 'Español', lang: 'es' },
@@ -37,7 +37,8 @@ export default defineConfig({
 			head: analytics,
 			customCss: ['./src/styles/kinesia.css'],
 			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/elmaedesistemas/kinesia-motion-ios' },
+				{ icon: 'github', label: 'GitHub (iOS)', href: 'https://github.com/elmaedesistemas/kinesia-motion-ios' },
+				{ icon: 'github', label: 'GitHub (Android)', href: 'https://github.com/elmaedesistemas/kinesia-motion-android' },
 			],
 			editLink: {
 				baseUrl: 'https://github.com/elmaedesistemas/kinesia-developers/edit/main/',
@@ -48,8 +49,23 @@ export default defineConfig({
 					label: 'Empezar', translations: { en: 'Get started', 'pt-BR': 'Começar' },
 					items: [
 						{ label: 'Introducción', translations: { en: 'Introduction', 'pt-BR': 'Introdução' }, slug: 'empezar/introduccion' },
+					],
+				},
+				{
+					label: 'iOS',
+					items: [
 						{ label: 'Instalación', translations: { en: 'Installation', 'pt-BR': 'Instalação' }, slug: 'empezar/instalacion' },
 						{ label: 'Inicio rápido', translations: { en: 'Quick start', 'pt-BR': 'Início rápido' }, slug: 'empezar/inicio-rapido' },
+						{ label: 'Cámara en vivo con Vision', translations: { en: 'Live camera with Vision', 'pt-BR': 'Câmera ao vivo com Vision' }, slug: 'guias/camara-vision' },
+					],
+				},
+				{
+					label: 'Android',
+					items: [
+						{ label: 'Instalación', translations: { en: 'Installation', 'pt-BR': 'Instalação' }, slug: 'android/instalacion' },
+						{ label: 'Inicio rápido', translations: { en: 'Quick start', 'pt-BR': 'Início rápido' }, slug: 'android/inicio-rapido' },
+						{ label: 'Cámara con MediaPipe', translations: { en: 'Camera with MediaPipe', 'pt-BR': 'Câmera com MediaPipe' }, slug: 'android/camara-mediapipe' },
+						{ label: 'Diferencias con iOS', translations: { en: 'Differences from iOS', 'pt-BR': 'Diferenças com o iOS' }, slug: 'android/diferencias-con-ios' },
 					],
 				},
 				{
@@ -63,7 +79,6 @@ export default defineConfig({
 				{
 					label: 'Guías', translations: { en: 'Guides', 'pt-BR': 'Guias' },
 					items: [
-						{ label: 'Cámara en vivo con Vision', translations: { en: 'Live camera with Vision', 'pt-BR': 'Câmera ao vivo com Vision' }, slug: 'guias/camara-vision' },
 						{ label: 'Eventos y snapshot', translations: { en: 'Events and snapshot', 'pt-BR': 'Eventos e snapshot' }, slug: 'guias/eventos-y-snapshot' },
 						{ label: 'Medición inicial', translations: { en: 'Baseline measurement', 'pt-BR': 'Medição inicial' }, slug: 'guias/medicion-inicial' },
 						{ label: 'Calidad de la medición', translations: { en: 'Measurement quality', 'pt-BR': 'Qualidade da medição' }, slug: 'guias/calidad-de-medicion' },
@@ -75,7 +90,7 @@ export default defineConfig({
 					label: 'Referencia', translations: { en: 'Reference', 'pt-BR': 'Referência' },
 					items: [
 						{ label: 'Catálogo de ejercicios', translations: { en: 'Exercise catalog', 'pt-BR': 'Catálogo de exercícios' }, slug: 'referencia/ejercicios' },
-						{ label: 'API', items: [{ autogenerate: { directory: 'referencia/api' } }] },
+						{ label: 'API (iOS)', items: [{ autogenerate: { directory: 'referencia/api' } }] },
 						{ label: 'Versiones', translations: { en: 'Releases', 'pt-BR': 'Versões' }, slug: 'referencia/versiones' },
 					],
 				},

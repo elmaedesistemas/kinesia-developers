@@ -6,7 +6,7 @@ hero:
   title: O movimento, medido <span class="kx-accent">com uma câmera</span>
   tagline: |
     Detecte o corpo, meça amplitudes em graus, conte repetições e corrija a técnica ao vivo. Sem sensores nem hardware extra.
-    <span class="kx-platforms"><span class="kx-platform is-live">iOS</span><span class="kx-platform">Android · em breve</span><span class="kx-platform">Web · em breve</span></span>
+    <span class="kx-platforms"><span class="kx-platform is-live">iOS</span><span class="kx-platform is-live">Android</span><span class="kx-platform">Web · em breve</span></span>
   image:
     html: |
       <div class="kx-demo" role="img" aria-label="Demonstração: um braço faz flexão de cotovelo enquanto o SDK mede o ângulo e conta repetições">
@@ -46,18 +46,25 @@ hero:
         <div class="kx-chip kx-chip-reps"><span class="kx-reps"></span>&nbsp;reps limpas</div>
       </div>
   actions:
-    - text: Início rápido
+    - text: Início rápido · iOS
       link: /pt/empezar/inicio-rapido/
       icon: right-arrow
+    - text: Início rápido · Android
+      link: /pt/android/inicio-rapido/
+      icon: right-arrow
+      variant: secondary
     - text: Ver no GitHub
       link: https://github.com/elmaedesistemas/kinesia-motion-ios
       icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard, TabItem, Tabs } from '@astrojs/starlight/components';
 
 ## Assim fica no código
+
+<Tabs syncKey="platform">
+<TabItem label="iOS · Swift">
 
 ```swift
 import KinesiaMotion
@@ -73,11 +80,31 @@ for await event in session.events() {
 }
 ```
 
+</TabItem>
+<TabItem label="Android · Kotlin">
+
+```kotlin
+import one.kinesia.motion.*
+import one.kinesia.motion.camera.CameraPoseProvider
+
+val session = MotionSession(ExerciseLibrary.elbowFlexion, BodySide.RIGHT)
+session.start(CameraPoseProvider(context, lifecycleOwner), lifecycleScope)
+
+session.events.collect { event ->
+    if (event is MotionEvent.RepCompleted) {
+        println("Repetição limpa: ${event.rep.peak.roundToInt()}°")
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## O que resolve
 
 <CardGrid>
 	<Card title="Medições em graus" icon="seti:pipeline">
-		Flexão, ângulo em relação à vertical e inclinação, calculados sobre os 19 pontos do corpo que o Vision detecta.
+		Flexão, ângulo em relação à vertical e inclinação, calculados sobre 19 pontos do corpo, com o Apple Vision no iOS e o MediaPipe no Android.
 	</Card>
 	<Card title="Repetições e sustentações" icon="approve-check">
 		Conta repetições com histerese (sem falsos positivos por tremor) e mede posições sustentadas com um relógio
@@ -88,15 +115,16 @@ for await event in session.events() {
 		ruim são rejeitadas, não contadas.
 	</Card>
 	<Card title="Exercícios como dados" icon="document">
-		Um exercício é JSON puro: adicione um novo, ou baixe do seu servidor, sem tocar no motor.
+		Um exercício é JSON puro, o mesmo no iOS e no Android: adicione um novo, ou baixe do seu servidor, sem tocar no motor.
 	</Card>
 </CardGrid>
 
 ## Por onde continuar
 
 <CardGrid>
-	<LinkCard title="Instalação" description="Adicione o pacote com o Swift Package Manager." href="/pt/empezar/instalacion/" />
+	<LinkCard title="Instalação no iOS" description="Adicione o pacote com o Swift Package Manager." href="/pt/empezar/instalacion/" />
+	<LinkCard title="Instalação no Android" description="Adicione a dependência com Gradle e JitPack." href="/pt/android/instalacion/" />
 	<LinkCard title="Como funciona" description="Dos quadros da câmera a uma repetição medida." href="/pt/conceptos/como-funciona/" />
 	<LinkCard title="Catálogo de exercícios" description="Os 8 exercícios incluídos." href="/pt/referencia/ejercicios/" />
-	<LinkCard title="Exercícios personalizados" description="Defina os seus em Swift ou JSON." href="/pt/guias/ejercicios-personalizados/" />
+	<LinkCard title="Exercícios personalizados" description="Defina os seus em código ou JSON." href="/pt/guias/ejercicios-personalizados/" />
 </CardGrid>

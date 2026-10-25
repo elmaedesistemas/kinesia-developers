@@ -1,9 +1,21 @@
 ---
 title: Versiones
-description: Historial de versiones de KinesiaMotion.
+description: Historial de versiones de KinesiaMotion para iOS y Android.
 ---
 
-La versión estable actual es **0.3.0**. Fija una versión exacta en tu `Package.swift` y revisa esta página antes de actualizar.
+Cada plataforma tiene sus propias versiones. Fija una versión exacta y revisa esta página antes de actualizar.
+
+## Android
+
+La versión actual es **0.1.0**. Repositorio: [kinesia-motion-android](https://github.com/elmaedesistemas/kinesia-motion-android).
+
+| Versión | Fecha | Cambios |
+| --- | --- | --- |
+| `0.1.0` | 2026-10-25 | **Primera versión**, equivalente a iOS `0.3.0`: el motor en Kotlin puro con los mismos ángulos, conteo, catálogo y JSON, y pruebas JVM que reproducen las de Swift. `kinesia-motion-camera` con `CameraPoseProvider` (CameraX) y `VideoPoseProvider`, sobre MediaPipe Pose Landmarker. El módulo de cámara aún no se ha validado en dispositivos. |
+
+## iOS
+
+La versión estable actual es **0.3.0**. Repositorio: [kinesia-motion-ios](https://github.com/elmaedesistemas/kinesia-motion-ios) (antes `kinesia-motion`).
 
 | Versión | Fecha | Cambios |
 | --- | --- | --- |

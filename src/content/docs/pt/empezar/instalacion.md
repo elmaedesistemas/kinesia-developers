@@ -31,8 +31,8 @@ targets: [
     .target(
         name: "MeuApp",
         dependencies: [
-            .product(name: "KinesiaMotion", package: "kinesia-motion"),
-            .product(name: "KinesiaMotionVision", package: "kinesia-motion")
+            .product(name: "KinesiaMotion", package: "kinesia-motion-ios"),
+            .product(name: "KinesiaMotionVision", package: "kinesia-motion-ios")
         ]
     )
 ]

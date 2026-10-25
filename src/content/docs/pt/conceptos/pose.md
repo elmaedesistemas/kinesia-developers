@@ -36,6 +36,8 @@ Envie a pose mesmo sem nenhum ponto. Uma pose vazia diz à sessão que o pacient
 | Braços | `leftShoulder`, `rightShoulder`, `leftElbow`, `rightElbow`, `leftWrist`, `rightWrist` |
 | Pernas | `leftHip`, `rightHip`, `leftKnee`, `rightKnee`, `leftAnkle`, `rightAnkle` |
 
+No Android, escrevem-se `Joint.LEFT_SHOULDER`, `Joint.NECK` etc. O MediaPipe detecta 33 pontos (BlazePose): o SDK os converte para estes mesmos 19 e calcula `neck` e `root` como o ponto médio dos ombros e dos quadris. Veja [Câmera com MediaPipe](/pt/android/camara-mediapipe/).
+
 Para não escrever `side == .left ? .leftKnee : .rightKnee`, use os atalhos:
 
 ```swift
