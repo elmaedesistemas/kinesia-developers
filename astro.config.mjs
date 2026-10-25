@@ -37,7 +37,7 @@ export default defineConfig({
 			head: analytics,
 			customCss: ['./src/styles/kinesia.css'],
 			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/elmaedesistemas/kinesia-motion' },
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/elmaedesistemas/kinesia-motion-ios' },
 			],
 			editLink: {
 				baseUrl: 'https://github.com/elmaedesistemas/kinesia-developers/edit/main/',

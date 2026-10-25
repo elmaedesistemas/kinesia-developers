@@ -1,6 +1,6 @@
 # Kinesia for Developers
 
-Documentación de [KinesiaMotion](https://github.com/elmaedesistemas/kinesia-motion), hecha con [Starlight](https://starlight.astro.build) (Astro).
+Documentación de [KinesiaMotion](https://github.com/elmaedesistemas/kinesia-motion-ios), hecha con [Starlight](https://starlight.astro.build) (Astro).
 
 ```bash
 npm install

@@ -62,7 +62,7 @@ swift run kinesia-validate ~/Validacion/mediciones.csv
 - It writes `resultados.csv` in the same folder, with the detail of each video.
 - `ejercicio` is one of: `codo` (elbow), `rodilla` (knee), `hombro-flexion`, `hombro-abduccion` (shoulder), `cadera-flexion`, `cadera-abduccion` (hip), `tobillo` (ankle), `cuello` (neck). `lado` is `izquierdo` (left) or `derecho` (right).
 
-Camera placement for each exercise and how to record are in [`Validation/INSTRUCCIONES.md`](https://github.com/elmaedesistemas/kinesia-motion/blob/main/Validation/INSTRUCCIONES.md) (in Spanish).
+Camera placement for each exercise and how to record are in [`Validation/INSTRUCCIONES.md`](https://github.com/elmaedesistemas/kinesia-motion-ios/blob/main/Validation/INSTRUCCIONES.md) (in Spanish).
 
 ## Synthetic poses
 
