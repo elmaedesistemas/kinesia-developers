@@ -3,7 +3,7 @@ title: Câmera com MediaPipe
 description: Use CameraPoseProvider e VideoPoseProvider para obter poses no Android.
 ---
 
-No Android, as poses vêm do **MediaPipe Pose Landmarker**, o mesmo modelo que o SDK web vai usar. `CameraPoseProvider` o roda sobre a câmera com CameraX, e `VideoPoseProvider` sobre um arquivo de vídeo. Os dois entregam poses que cumprem o [contrato de Pose](/pt/conceptos/pose/), então o motor mede igual ao iOS.
+As poses vêm do **MediaPipe Pose Landmarker**. `CameraPoseProvider` o roda sobre a câmera com CameraX, e `VideoPoseProvider` sobre um arquivo de vídeo. Os dois entregam poses que cumprem o [contrato de Pose](/pt/android/conceptos/pose/).
 
 ```kotlin
 import one.kinesia.motion.camera.CameraPoseProvider

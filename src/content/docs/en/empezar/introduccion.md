@@ -17,7 +17,7 @@ On each platform the SDK has two parts: an **engine** with no camera and no UI, 
 
 The split is deliberate: the engine can be tested without a phone (on macOS or on the JVM) with recorded poses, and the pose source can be swapped (another detector, a file, a server) without touching anything else.
 
-The guides show their examples in Swift. For Android, see the [differences from iOS](/en/android/diferencias-con-ios/).
+Each platform has its own documentation, with its own code, guides and reference: [iOS](/en/empezar/instalacion/) and [Android](/en/android/introduccion/).
 
 ## What it does
 

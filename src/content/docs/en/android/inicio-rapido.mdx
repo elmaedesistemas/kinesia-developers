@@ -1,11 +1,11 @@
 ---
-title: Quick start on Android
+title: Quick start
 description: A Jetpack Compose screen that counts elbow flexions with the camera.
 ---
 
 import { Steps } from '@astrojs/starlight/components';
 
-It's the same screen as the [iOS quick start](/en/empezar/inicio-rapido/), in Kotlin: the camera, the live elbow angle and the reps. The three pieces are the same: **pose source**, **session** and **events**.
+We'll build a Jetpack Compose screen that shows the camera, the live elbow angle and the reps. By the end you'll have the three pieces every integration uses: **pose source**, **session** and **events**.
 
 <Steps>
 
@@ -60,6 +60,9 @@ It's the same screen as the [iOS quick start](/en/empezar/inicio-rapido/), in Ko
 ## The full example
 
 ```kotlin title="ElbowScreen.kt"
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -89,8 +92,13 @@ fun ElbowScreen() {
     val snapshot by session.snapshot.collectAsStateWithLifecycle()
     var message by remember { mutableStateOf("Stand sideways and show your whole arm") }
 
+    var hasPermission by remember { mutableStateOf(CameraPoseProvider.isAuthorized(context)) }
+    val askCamera = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { hasPermission = it }
+    LaunchedEffect(Unit) { if (!hasPermission) askCamera.launch(Manifest.permission.CAMERA) }
+
     // Runs while the screen is visible: leaving it cancels both, and the camera turns off.
-    LaunchedEffect(session) {
+    LaunchedEffect(session, hasPermission) {
+        if (!hasPermission) return@LaunchedEffect
         val camera = CameraPoseProvider(context, lifecycleOwner, previewSurface = previewView.surfaceProvider)
         launch { session.run(camera) }
         session.events.collect { event ->
@@ -125,11 +133,10 @@ fun ElbowScreen() {
 ```
 
 :::tip[Try it without a phone]
-The engine (`kinesia-motion`) is pure Kotlin. Swap `CameraPoseProvider` for a `RecordedPoseProvider` with recorded poses and run the same code in a JVM test, no emulator. See [Tests and recordings](/en/guias/pruebas-y-grabaciones/).
+The engine (`kinesia-motion`) is pure Kotlin. Swap `CameraPoseProvider` for a `RecordedPoseProvider` with recorded poses and run the same code in a JVM test, no emulator. See [Tests and recordings](/en/android/guias/pruebas-y-grabaciones/).
 :::
 
 ## Next steps
 
-- Check the [differences from iOS](/en/android/diferencias-con-ios/) to read the guides, which have their examples in Swift.
-- Understand [how the engine works](/en/conceptos/como-funciona/) inside.
-- Add a [baseline measurement](/en/guias/medicion-inicial/) to know where the patient starts.
+- Understand [how the engine works](/en/android/conceptos/como-funciona/) inside.
+- Add a [baseline measurement](/en/android/guias/medicion-inicial/) to know where the patient starts.

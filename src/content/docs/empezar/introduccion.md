@@ -17,7 +17,7 @@ En cada plataforma, el SDK tiene dos partes: un **motor** sin cámara ni interfa
 
 La separación es intencional: el motor se puede probar sin teléfono (en macOS o en la JVM) con poses grabadas, y la fuente de poses se puede cambiar (otro detector, un archivo, un servidor) sin tocar nada más.
 
-Las guías muestran los ejemplos en Swift. Para Android, revisa las [diferencias con iOS](/android/diferencias-con-ios/).
+Cada plataforma tiene su propia documentación, con su código, sus guías y su referencia: [iOS](/empezar/instalacion/) y [Android](/android/introduccion/).
 
 ## Lo que hace
 

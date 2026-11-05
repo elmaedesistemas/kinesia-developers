@@ -1,12 +1,12 @@
 ---
-title: Instalación en Android
+title: Instalación
 description: Agrega KinesiaMotion a tu app de Android con Gradle y JitPack.
 ---
 
 KinesiaMotion para Android se distribuye por **JitPack**, que compila directamente los tags del repositorio [kinesia-motion-android](https://github.com/elmaedesistemas/kinesia-motion-android).
 
 :::caution[Versión 0.1.0]
-El núcleo reproduce las mismas pruebas que el SDK de iOS. El módulo de cámara todavía no se ha validado en dispositivos: si encuentras un problema, abre un issue en el repositorio.
+El motor tiene pruebas JVM completas. El módulo de cámara todavía no se ha validado en dispositivos: si encuentras un problema, abre un issue en el repositorio.
 :::
 
 ## Dos módulos
@@ -38,6 +38,15 @@ dependencies {
 }
 ```
 
+Si tu pantalla usa `PreviewView` y Jetpack Compose, agrega también:
+
+```kotlin title="app/build.gradle.kts"
+dependencies {
+    implementation("androidx.camera:camera-view:1.6.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.10.0")
+}
+```
+
 Si solo necesitas el motor (pruebas, un servidor, poses de otra fuente):
 
 ```kotlin
@@ -45,7 +54,7 @@ implementation("com.github.elmaedesistemas.kinesia-motion-android:kinesia-motion
 ```
 
 :::note[Versiones]
-Los tags no llevan `v`: `0.1.0`, `0.2.0`… Fija una versión exacta y revisa las [notas de versión](/referencia/versiones/) antes de actualizar.
+Los tags no llevan `v`: `0.1.0`, `0.2.0`… Fija una versión exacta y revisa las [notas de versión](/android/referencia/versiones/) antes de actualizar.
 :::
 
 ## Requisitos

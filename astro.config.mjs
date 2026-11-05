@@ -18,6 +18,11 @@ const analytics = gaId
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://developers.kinesia.one',
+	redirects: {
+		'/android/diferencias-con-ios': '/android/introduccion/',
+		'/en/android/diferencias-con-ios': '/en/android/introduccion/',
+		'/pt/android/diferencias-con-ios': '/pt/android/introduccion/',
+	},
 	integrations: [
 		starlight({
 			title: 'Kinesia for Developers',
@@ -53,45 +58,83 @@ export default defineConfig({
 				},
 				{
 					label: 'iOS',
+					collapsed: true,
 					items: [
-						{ label: 'Instalación', translations: { en: 'Installation', 'pt-BR': 'Instalação' }, slug: 'empezar/instalacion' },
-						{ label: 'Inicio rápido', translations: { en: 'Quick start', 'pt-BR': 'Início rápido' }, slug: 'empezar/inicio-rapido' },
-						{ label: 'Cámara en vivo con Vision', translations: { en: 'Live camera with Vision', 'pt-BR': 'Câmera ao vivo com Vision' }, slug: 'guias/camara-vision' },
+							{
+								label: 'Empezar', translations: { en: 'Get started', 'pt-BR': 'Começar' },
+								items: [
+									{ label: 'Instalación', translations: { en: 'Installation', 'pt-BR': 'Instalação' }, slug: 'empezar/instalacion' },
+									{ label: 'Inicio rápido', translations: { en: 'Quick start', 'pt-BR': 'Início rápido' }, slug: 'empezar/inicio-rapido' },
+								],
+							},
+							{
+								label: 'Conceptos', translations: { en: 'Concepts', 'pt-BR': 'Conceitos' },
+								items: [
+									{ label: 'Cómo funciona', translations: { en: 'How it works', 'pt-BR': 'Como funciona' }, slug: 'conceptos/como-funciona' },
+									{ label: 'El contrato de Pose', translations: { en: 'The Pose contract', 'pt-BR': 'O contrato de Pose' }, slug: 'conceptos/pose' },
+									{ label: 'Repeticiones y sostenidos', translations: { en: 'Reps and holds', 'pt-BR': 'Repetições e sustentações' }, slug: 'conceptos/repeticiones' },
+								],
+							},
+							{
+								label: 'Guías', translations: { en: 'Guides', 'pt-BR': 'Guias' },
+								items: [
+									{ label: 'Cámara en vivo con Vision', translations: { en: 'Live camera with Vision', 'pt-BR': 'Câmera ao vivo com Vision' }, slug: 'guias/camara-vision' },
+									{ label: 'Eventos y snapshot', translations: { en: 'Events and snapshot', 'pt-BR': 'Eventos e snapshot' }, slug: 'guias/eventos-y-snapshot' },
+									{ label: 'Medición inicial', translations: { en: 'Baseline measurement', 'pt-BR': 'Medição inicial' }, slug: 'guias/medicion-inicial' },
+									{ label: 'Calidad de la medición', translations: { en: 'Measurement quality', 'pt-BR': 'Qualidade da medição' }, slug: 'guias/calidad-de-medicion' },
+									{ label: 'Ejercicios personalizados', translations: { en: 'Custom exercises', 'pt-BR': 'Exercícios personalizados' }, slug: 'guias/ejercicios-personalizados' },
+									{ label: 'Pruebas y grabaciones', translations: { en: 'Tests and recordings', 'pt-BR': 'Testes e gravações' }, slug: 'guias/pruebas-y-grabaciones' },
+								],
+							},
+							{
+								label: 'Referencia', translations: { en: 'Reference', 'pt-BR': 'Referência' },
+								items: [
+									{ label: 'Catálogo de ejercicios', translations: { en: 'Exercise catalog', 'pt-BR': 'Catálogo de exercícios' }, slug: 'referencia/ejercicios' },
+									{ label: 'API', items: [{ autogenerate: { directory: 'referencia/api' } }] },
+									{ label: 'Versiones', translations: { en: 'Releases', 'pt-BR': 'Versões' }, slug: 'referencia/versiones' },
+								],
+							},
 					],
 				},
 				{
 					label: 'Android',
+					collapsed: true,
 					items: [
-						{ label: 'Instalación', translations: { en: 'Installation', 'pt-BR': 'Instalação' }, slug: 'android/instalacion' },
-						{ label: 'Inicio rápido', translations: { en: 'Quick start', 'pt-BR': 'Início rápido' }, slug: 'android/inicio-rapido' },
-						{ label: 'Cámara con MediaPipe', translations: { en: 'Camera with MediaPipe', 'pt-BR': 'Câmera com MediaPipe' }, slug: 'android/camara-mediapipe' },
-						{ label: 'Diferencias con iOS', translations: { en: 'Differences from iOS', 'pt-BR': 'Diferenças com o iOS' }, slug: 'android/diferencias-con-ios' },
-					],
-				},
-				{
-					label: 'Conceptos', translations: { en: 'Concepts', 'pt-BR': 'Conceitos' },
-					items: [
-						{ label: 'Cómo funciona', translations: { en: 'How it works', 'pt-BR': 'Como funciona' }, slug: 'conceptos/como-funciona' },
-						{ label: 'El contrato de Pose', translations: { en: 'The Pose contract', 'pt-BR': 'O contrato de Pose' }, slug: 'conceptos/pose' },
-						{ label: 'Repeticiones y sostenidos', translations: { en: 'Reps and holds', 'pt-BR': 'Repetições e sustentações' }, slug: 'conceptos/repeticiones' },
-					],
-				},
-				{
-					label: 'Guías', translations: { en: 'Guides', 'pt-BR': 'Guias' },
-					items: [
-						{ label: 'Eventos y snapshot', translations: { en: 'Events and snapshot', 'pt-BR': 'Eventos e snapshot' }, slug: 'guias/eventos-y-snapshot' },
-						{ label: 'Medición inicial', translations: { en: 'Baseline measurement', 'pt-BR': 'Medição inicial' }, slug: 'guias/medicion-inicial' },
-						{ label: 'Calidad de la medición', translations: { en: 'Measurement quality', 'pt-BR': 'Qualidade da medição' }, slug: 'guias/calidad-de-medicion' },
-						{ label: 'Ejercicios personalizados', translations: { en: 'Custom exercises', 'pt-BR': 'Exercícios personalizados' }, slug: 'guias/ejercicios-personalizados' },
-						{ label: 'Pruebas y grabaciones', translations: { en: 'Tests and recordings', 'pt-BR': 'Testes e gravações' }, slug: 'guias/pruebas-y-grabaciones' },
-					],
-				},
-				{
-					label: 'Referencia', translations: { en: 'Reference', 'pt-BR': 'Referência' },
-					items: [
-						{ label: 'Catálogo de ejercicios', translations: { en: 'Exercise catalog', 'pt-BR': 'Catálogo de exercícios' }, slug: 'referencia/ejercicios' },
-						{ label: 'API (iOS)', items: [{ autogenerate: { directory: 'referencia/api' } }] },
-						{ label: 'Versiones', translations: { en: 'Releases', 'pt-BR': 'Versões' }, slug: 'referencia/versiones' },
+							{
+								label: 'Empezar', translations: { en: 'Get started', 'pt-BR': 'Começar' },
+								items: [
+									{ label: 'Introducción', translations: { en: 'Introduction', 'pt-BR': 'Introdução' }, slug: 'android/introduccion' },
+									{ label: 'Instalación', translations: { en: 'Installation', 'pt-BR': 'Instalação' }, slug: 'android/instalacion' },
+									{ label: 'Inicio rápido', translations: { en: 'Quick start', 'pt-BR': 'Início rápido' }, slug: 'android/inicio-rapido' },
+								],
+							},
+							{
+								label: 'Conceptos', translations: { en: 'Concepts', 'pt-BR': 'Conceitos' },
+								items: [
+									{ label: 'Cómo funciona', translations: { en: 'How it works', 'pt-BR': 'Como funciona' }, slug: 'android/conceptos/como-funciona' },
+									{ label: 'El contrato de Pose', translations: { en: 'The Pose contract', 'pt-BR': 'O contrato de Pose' }, slug: 'android/conceptos/pose' },
+									{ label: 'Repeticiones y sostenidos', translations: { en: 'Reps and holds', 'pt-BR': 'Repetições e sustentações' }, slug: 'android/conceptos/repeticiones' },
+								],
+							},
+							{
+								label: 'Guías', translations: { en: 'Guides', 'pt-BR': 'Guias' },
+								items: [
+									{ label: 'Cámara con MediaPipe', translations: { en: 'Camera with MediaPipe', 'pt-BR': 'Câmera com MediaPipe' }, slug: 'android/camara-mediapipe' },
+									{ label: 'Eventos y snapshot', translations: { en: 'Events and snapshot', 'pt-BR': 'Eventos e snapshot' }, slug: 'android/guias/eventos-y-snapshot' },
+									{ label: 'Medición inicial', translations: { en: 'Baseline measurement', 'pt-BR': 'Medição inicial' }, slug: 'android/guias/medicion-inicial' },
+									{ label: 'Calidad de la medición', translations: { en: 'Measurement quality', 'pt-BR': 'Qualidade da medição' }, slug: 'android/guias/calidad-de-medicion' },
+									{ label: 'Ejercicios personalizados', translations: { en: 'Custom exercises', 'pt-BR': 'Exercícios personalizados' }, slug: 'android/guias/ejercicios-personalizados' },
+									{ label: 'Pruebas y grabaciones', translations: { en: 'Tests and recordings', 'pt-BR': 'Testes e gravações' }, slug: 'android/guias/pruebas-y-grabaciones' },
+								],
+							},
+							{
+								label: 'Referencia', translations: { en: 'Reference', 'pt-BR': 'Referência' },
+								items: [
+									{ label: 'Catálogo de ejercicios', translations: { en: 'Exercise catalog', 'pt-BR': 'Catálogo de exercícios' }, slug: 'android/referencia/ejercicios' },
+									{ label: 'API', items: [{ autogenerate: { directory: 'android/referencia/api' } }] },
+									{ label: 'Versiones', translations: { en: 'Releases', 'pt-BR': 'Versões' }, slug: 'android/referencia/versiones' },
+								],
+							},
 					],
 				},
 			],
