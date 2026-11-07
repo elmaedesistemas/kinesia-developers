@@ -4,10 +4,11 @@ description: Historial de versiones de KinesiaMotion para iOS.
 next: false
 ---
 
-La versión estable actual es **0.5.1**. Repositorio: [kinesia-motion-ios](https://github.com/elmaedesistemas/kinesia-motion-ios). Fija una versión exacta en tu `Package.swift` y revisa esta página antes de actualizar.
+La versión estable actual es **0.5.2**. Repositorio: [kinesia-motion-ios](https://github.com/elmaedesistemas/kinesia-motion-ios). Fija una versión exacta en tu `Package.swift` y revisa esta página antes de actualizar.
 
 | Versión | Fecha | Cambios |
 | --- | --- | --- |
+| `0.5.2` | 2026-11-06 | Corrección: el modelo 3D de Vision fallaba en cada fotograma de la cámara; ahora recibe imágenes BGRA. |
 | `0.5.1` | 2026-11-06 | Corrección: con la cámara frontal, los puntos 3D del brazo activo se descartaban y la medida seguía en 2D. La consola de Xcode indica si llegan los puntos 3D (categoría `vision3d`). |
 | `0.5.0` | 2026-11-06 | **Elegir 2D o 3D:** `MotionSession(space:)` y `RepEngine.space` (`.image`, `.world` o automático). |
 | `0.4.0` | 2026-11-06 | **Medición 3D:** `Pose.world`, `MeasureSpace`, `imageValue`/`worldValue`; `VisionPoseProvider` y `VideoPoseProvider` con `world: true`; `kinesia-validate` compara 2D y 3D. Ver [Medición 3D](/guias/medicion-3d/). |
