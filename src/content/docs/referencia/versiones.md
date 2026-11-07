@@ -4,10 +4,12 @@ description: Historial de versiones de KinesiaMotion para iOS.
 next: false
 ---
 
-La versión estable actual es **0.3.0**. Repositorio: [kinesia-motion-ios](https://github.com/elmaedesistemas/kinesia-motion-ios). Fija una versión exacta en tu `Package.swift` y revisa esta página antes de actualizar.
+La versión estable actual es **0.5.0**. Repositorio: [kinesia-motion-ios](https://github.com/elmaedesistemas/kinesia-motion-ios). Fija una versión exacta en tu `Package.swift` y revisa esta página antes de actualizar.
 
 | Versión | Fecha | Cambios |
 | --- | --- | --- |
+| `0.5.0` | 2026-11-06 | **Elegir 2D o 3D:** `MotionSession(space:)` y `RepEngine.space` (`.image`, `.world` o automático). |
+| `0.4.0` | 2026-11-06 | **Medición 3D:** `Pose.world`, `MeasureSpace`, `imageValue`/`worldValue`; `VisionPoseProvider` y `VideoPoseProvider` con `world: true`; `kinesia-validate` compara 2D y 3D. Ver [Medición 3D](/guias/medicion-3d/). |
 | `0.3.0` | 2026-10-25 | **`kinesia-validate`**: herramienta para comparar los ángulos con un goniómetro a partir de videos y un CSV. Sin cambios en la API. |
 | `0.2.0` | 2026-10-24 | **`VideoPoseProvider`**: poses desde un video (`.mov`, `.mp4`) con el mismo detector que la cámara, en iOS y macOS; `readAll()` devuelve todas las poses. |
 | `0.1.0` | 2026-10-24 | **Primera versión estable.** Mismo código que `0.1.0-alpha.9`, con `CHANGELOG.md`. La precisión frente al goniómetro (meta ±5°) se valida en el piloto. |
