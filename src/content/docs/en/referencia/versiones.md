@@ -4,10 +4,11 @@ description: KinesiaMotion release history for iOS.
 next: false
 ---
 
-The current stable release is **0.5.2**. Repository: [kinesia-motion-ios](https://github.com/elmaedesistemas/kinesia-motion-ios). Pin an exact version in your `Package.swift` and check this page before updating.
+The current stable release is **0.5.3**. Repository: [kinesia-motion-ios](https://github.com/elmaedesistemas/kinesia-motion-ios). Pin an exact version in your `Package.swift` and check this page before updating.
 
 | Version | Date | Changes |
 | --- | --- | --- |
+| `0.5.3` | 2026-11-06 | Fix: 3D runs on the un-mirrored image (Vision's 3D model fails on the mirrored front camera) and switches itself off if it keeps failing. |
 | `0.5.2` | 2026-11-06 | Fix: Vision's 3D body pose failed on every camera frame; it now gets BGRA frames. |
 | `0.5.1` | 2026-11-06 | Fix: with the front camera, the active arm's 3D points were dropped and the measure stayed in 2D. The Xcode console says whether 3D points arrive (category `vision3d`). |
 | `0.5.0` | 2026-11-06 | **Choose 2D or 3D:** `MotionSession(space:)` and `RepEngine.space` (`.image`, `.world` or automatic). |
