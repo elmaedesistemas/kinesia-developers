@@ -3,7 +3,7 @@ title: Catálogo de ejercicios
 description: Los ejercicios que vienen en ExerciseLibrary, con su medición, umbrales y reglas de forma.
 ---
 
-`ExerciseLibrary` trae 8 ejercicios listos para usar.
+`ExerciseLibrary` trae 12 ejercicios listos para usar.
 
 ```swift
 ExerciseLibrary.all                           // todos
@@ -23,6 +23,10 @@ ExerciseLibrary.definitions(for: .shoulder)   // por región
 | Abducción de cadera de pie | `hip.abduction.standing` | frente | reps 10 → 20 | 40° |
 | Dorsiflexión de tobillo en zancada | `ankle.dorsiflexion.lunge` | lado | sostenido > 15° · 3 s | 35° |
 | Inclinación lateral de cuello | `neck.lateralFlexion` | frente | reps 10 → 20 | 40° |
+| Extensión de hombro | `shoulder.extension` | lado | reps 15 → 30 | 50° |
+| Extensión de cadera de pie | `hip.extension.standing` | lado | reps 8 → 15 | 20° |
+| Flexión de tronco | `trunk.flexion` | lado | reps 20 → 45 | 70° |
+| Inclinación lateral de tronco | `trunk.lateralFlexion` | frente | reps 10 → 20 | 30° |
 
 «reps 30 → 90» significa `.reps(low: 30, high: 90)`: ver [Repeticiones y sostenidos](/conceptos/repeticiones/).
 
@@ -60,6 +64,17 @@ Brazo hacia el lado y arriba, de frente. Codo estirado, sin encoger el hombro ni
 - **Mide:** `.fromVertical(from: "shoulder", to: "elbow")`
 - **Reglas:** `keepElbowStraight` (0…25°), `keepShouldersLevel` (inclinación entre hombros 0…15°), `keepTrunkUpright` (0…15°).
 
+### Extensión de hombro · `shoulderExtension`
+
+Brazo estirado hacia atrás, de perfil. Codo estirado; el tronco no se inclina hacia adelante para sumar grados.
+
+- **Mide:** `.fromVertical(from: "shoulder", to: "elbow")`
+- **Reglas:** `keepElbowStraight` (0…25°), `keepTrunkUpright` (0…15°).
+
+:::note
+Las extensiones leen el mismo ángulo que la flexión correspondiente, que no tiene dirección. Tu app debe decirle al paciente hacia dónde moverse.
+:::
+
 ## Cadera
 
 ### Flexión de cadera de pie · `hipFlexionStanding`
@@ -75,6 +90,13 @@ Pierna hacia el lado, de frente. Rodilla estirada, cadera nivelada (sin subir la
 
 - **Mide:** `.fromVertical(from: "hip", to: "ankle")`
 - **Reglas:** `keepKneeStraight` (0…20°), `keepHipsLevel` (0…10°), `keepTrunkUpright` (0…15°).
+
+### Extensión de cadera de pie · `hipExtensionStanding`
+
+Pierna estirada hacia atrás, de perfil, apoyado en una silla. Rodilla estirada y tronco recto: inclinarse hacia adelante es como la espalda finge la extensión.
+
+- **Mide:** `.fromVertical(from: "hip", to: "ankle")`
+- **Reglas:** `keepKneeStraight` (0…20°), `keepTrunkUpright` (0…15°).
 
 ## Tobillo
 
@@ -101,4 +123,28 @@ Oreja hacia el hombro, sentado o de pie, de frente. Los hombros quedan nivelados
 
 :::note
 La inclinación no tiene dirección: el mismo valor sale hacia la izquierda o la derecha. Haz una serie por lado.
+:::
+
+## Tronco
+
+### Flexión de tronco · `trunkFlexion`
+
+Inclinarse hacia el suelo, de pie y de perfil. Rodillas estiradas, para que doblarlas no compre profundidad. Región `back`.
+
+- **Mide:** `.fromVertical(from: "shoulder", to: "hip")`, la inclinación del tronco.
+- **Reglas:** `keepKneeStraight` (0…20°).
+
+:::caution[Suma lumbar y cadera]
+La pose 2D no tiene puntos de la columna, así que se mide la inclinación del tronco (hombro sobre cadera), que suma la flexión lumbar y la de cadera, como un inclinómetro a la altura de los hombros.
+:::
+
+### Inclinación lateral de tronco · `trunkLateralFlexion`
+
+La mano se desliza por el muslo, de pie y de frente. Cadera nivelada, para que la pelvis no se desplace. Región `back`.
+
+- **Mide:** `.fromVertical(from: "neck", to: "root")`, la línea media (entre hombros y entre caderas) contra la vertical.
+- **Reglas:** `keepHipsLevel` (0…10°).
+
+:::note
+La inclinación no tiene dirección: haz una serie por lado.
 :::

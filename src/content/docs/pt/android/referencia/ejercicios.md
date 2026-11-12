@@ -3,7 +3,7 @@ title: Catálogo de exercícios
 description: Os exercícios do ExerciseLibrary, com sua medição, limiares e regras de forma.
 ---
 
-`ExerciseLibrary` traz 8 exercícios prontos para usar.
+`ExerciseLibrary` traz 12 exercícios prontos para usar.
 
 ```kotlin
 ExerciseLibrary.all                                   // todos
@@ -23,6 +23,10 @@ ExerciseLibrary.definitions(BodyRegion.SHOULDER)      // por região
 | Abdução de quadril em pé | `hip.abduction.standing` | frente | reps 10 → 20 | 40° |
 | Dorsiflexão de tornozelo em afundo | `ankle.dorsiflexion.lunge` | lado | sustentação > 15° · 3 s | 35° |
 | Inclinação lateral do pescoço | `neck.lateralFlexion` | frente | reps 10 → 20 | 40° |
+| Extensão de ombro | `shoulder.extension` | lado | reps 15 → 30 | 50° |
+| Extensão de quadril em pé | `hip.extension.standing` | lado | reps 8 → 15 | 20° |
+| Flexão de tronco | `trunk.flexion` | lado | reps 20 → 45 | 70° |
+| Inclinação lateral do tronco | `trunk.lateralFlexion` | frente | reps 10 → 20 | 30° |
 
 «reps 30 → 90» significa `Kind.Reps(low = 30.0, high = 90.0)`: veja [Repetições e sustentações](/pt/android/conceptos/repeticiones/).
 
@@ -60,6 +64,17 @@ Braço para o lado e para cima, de frente. Cotovelo esticado, sem encolher o omb
 - **Mede:** `Measure.FromVertical("shoulder", "elbow")`
 - **Regras:** `KEEP_ELBOW_STRAIGHT` (0…25°), `KEEP_SHOULDERS_LEVEL` (inclinação entre ombros 0…15°), `KEEP_TRUNK_UPRIGHT` (0…15°).
 
+### Extensão de ombro · `shoulderExtension`
+
+Braço esticado para trás, de perfil. Cotovelo esticado; o tronco não se inclina para frente para somar graus.
+
+- **Mede:** `Measure.FromVertical("shoulder", "elbow")`
+- **Regras:** `KEEP_ELBOW_STRAIGHT` (0…25°), `KEEP_TRUNK_UPRIGHT` (0…15°).
+
+:::note
+As extensões leem o mesmo ângulo que a flexão correspondente, que não tem direção. Seu app deve dizer ao paciente para onde se mover.
+:::
+
 ## Quadril
 
 ### Flexão de quadril em pé · `hipFlexionStanding`
@@ -75,6 +90,13 @@ Perna para o lado, de frente. Joelho esticado, quadril nivelado (sem subir a pel
 
 - **Mede:** `Measure.FromVertical("hip", "ankle")`
 - **Regras:** `KEEP_KNEE_STRAIGHT` (0…20°), `KEEP_HIPS_LEVEL` (0…10°), `KEEP_TRUNK_UPRIGHT` (0…15°).
+
+### Extensão de quadril em pé · `hipExtensionStanding`
+
+Perna esticada para trás, de perfil, apoiado numa cadeira. Joelho esticado e tronco reto: inclinar para frente é como a coluna finge a extensão.
+
+- **Mede:** `Measure.FromVertical("hip", "ankle")`
+- **Regras:** `KEEP_KNEE_STRAIGHT` (0…20°), `KEEP_TRUNK_UPRIGHT` (0…15°).
 
 ## Tornozelo
 
@@ -101,4 +123,28 @@ Orelha em direção ao ombro, sentado ou em pé, de frente. Os ombros ficam nive
 
 :::note
 A inclinação não tem direção: o mesmo valor sai para a esquerda ou para a direita. Faça uma série por lado.
+:::
+
+## Tronco
+
+### Flexão de tronco · `trunkFlexion`
+
+Inclinar em direção ao chão, em pé e de perfil. Joelhos esticados, para que dobrá-los não ganhe profundidade. Região `back`.
+
+- **Mede:** `Measure.FromVertical("shoulder", "hip")`, a inclinação do tronco.
+- **Regras:** `KEEP_KNEE_STRAIGHT` (0…20°).
+
+:::caution[Soma lombar e quadril]
+A pose 2D não tem pontos da coluna, então mede-se a inclinação do tronco (ombro sobre quadril), que soma a flexão lombar e a de quadril, como um inclinômetro na altura dos ombros.
+:::
+
+### Inclinação lateral do tronco · `trunkLateralFlexion`
+
+A mão desliza pela coxa, em pé e de frente. Quadril nivelado, para que a pelve não se desloque. Região `back`.
+
+- **Mede:** `Measure.FromVertical("neck", "root")`, a linha média (entre os ombros e entre os quadris) contra a vertical.
+- **Regras:** `KEEP_HIPS_LEVEL` (0…10°).
+
+:::note
+A inclinação não tem direção: faça uma série por lado.
 :::
